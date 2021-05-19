@@ -1,0 +1,77 @@
+  .top {
+      position: absolute;
+      margin-left: 548px;
+      z-index: 1;
+      font-size: 30px;
+      color: rgb(233, 219, 219);
+  }
+  
+  .block {
+      background-color: rgb(11, 71, 110);
+      border-radius: 10px;
+      margin-top: 13%;
+      display: grid;
+      border: 3px solid rgb(25, 44, 56);
+      width: 20%;
+      height: 350px;
+      padding: 100px 80px 120px 80px;
+      grid-template-columns: max-content max-content;
+      grid-gap: 8px;
+      position: relative;
+      align-items: center;
+      font-size: large;
+      color: rgb(216, 216, 216);
+      margin-top: 75px;
+  }
+  
+  div label {
+      text-align: right;
+  }
+  
+  div label:after {
+      content: ":";
+  }
+  
+  .calculate:hover {
+      background-color: #0a1022;
+  }
+  
+  .reset:hover {
+      background-color: #0a1022;
+  }
+  
+  .calculate {
+      color: #fff !important;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: #34a0d6;
+      padding: 5px 10px 5px 10px;
+      border-radius: 50px;
+      display: inline-block;
+      border: none;
+      position: absolute;
+      transition: all 0.4s ease 0s;
+      margin-top: -60px;
+      margin-left: -130px;
+      cursor: pointer;
+  }
+  
+  .reset {
+      color: #fff !important;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: #f52e2e;
+      padding: 5px 20px 5px 20px;
+      border-radius: 50px;
+      display: inline-block;
+      border: none;
+      position: absolute;
+      transition: all 0.4s ease 0s;
+      margin-top: -60px;
+      margin-left: 45px;
+      cursor: pointer;
+  }
+  
+  .navbar {
+      background-color: #ff45ee;
+  }

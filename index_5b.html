@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz-Space</title>
+    <h1>Space Quiz</h1>
+    <style>
+        body {
+            font-size: 20px;
+            font-family: sans-serif;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: aliceblue;
+        }
+        
+        h1 {
+            position: absolute;
+            margin-top: -250px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .question {
+            font-weight: 600;
+        }
+        
+        .answers {
+            margin-bottom: 20px;
+        }
+        
+        .answers label {
+            display: block;
+        }
+        
+        #submit {
+            font-family: sans-serif;
+            font-size: 20px;
+            background-color: rgb(59, 129, 187);
+            position: absolute;
+            color: #fff;
+            border: 0px;
+            border-radius: 3px;
+            padding: 20px;
+            cursor: pointer;
+            margin-top: 750px;
+        }
+        
+        #submit:hover {
+            background-color: rgb(37, 167, 87);
+        }
+        
+        #next {
+            margin-top: 400px;
+        }
+        
+        #previous {
+            margin-top: 400px;
+        }
+        
+        .slide {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .active-slide {
+            opacity: 1;
+            z-index: 2;
+        }
+        
+        .quiz-container {
+            position: absolute;
+            height: 200px;
+            margin-top: 50px;
+            border: 10px solid rgb(59, 129, 187);
+            border-radius: 15px;
+            padding-right: 200px;
+            padding-left: 400px;
+            padding-bottom: 20px;
+        }
+        
+        #results {
+            position: absolute;
+            margin-top: 550px;
+            font-size: x-large;
+            color: rgb(22, 114, 22);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <div id="quiz"></div>
+    </div>
+    <button id="previous">Previous Question</button>
+    <button id="next">Next Question</button>
+    <button id="submit">Submit Quiz</button>
+    <div id="results"></div>
+
+
+
+    <script>
+        (function() {
+            function QuizCompletion() {
+                const output = [];
+
+                myQuestions.forEach(
+                    (currentQuestion, questionNumber) => {
+
+                        const answers = [];
+
+                        for (letter in currentQuestion.answers) {
+
+                            answers.push(
+                                `<label>
+                    <input type="radio" name="question${questionNumber}" value="${letter}">
+                    ${letter} :
+                    ${currentQuestion.answers[letter]}
+                  </label>`
+                            );
+                        }
+
+                        output.push(
+                            `<div class="slide">
+                  <div class="question"> ${currentQuestion.question} </div>
+                  <div class="answers"> ${answers.join("")} </div>
+                </div>`
+                        );
+                    }
+                );
+
+                quizContainer.innerHTML = output.join('');
+            }
+
+            function showResults() {
+
+                const answerContainers = quizContainer.querySelectorAll('.answers');
+
+                let numCorrect = 0;
+
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+
+                    const answerContainer = answerContainers[questionNumber];
+                    const selector = `input[name=question${questionNumber}]:checked`;
+                    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                    if (userAnswer === currentQuestion.correctAnswer) {
+                        numCorrect++;
+
+                        answerContainers[questionNumber].style.color = 'green';
+                    } else {
+                        answerContainers[questionNumber].style.color = 'red';
+                    }
+                });
+                resultsContainer.innerHTML = `${numCorrect} / ${myQuestions.length}`;
+            }
+
+            function showSlide(n) {
+                slides[currentSlide].classList.remove('active-slide');
+                slides[n].classList.add('active-slide');
+                currentSlide = n;
+                if (currentSlide === 0) {
+                    previousButton.style.display = 'none';
+                } else {
+                    previousButton.style.display = 'inline-block';
+                }
+                if (currentSlide === slides.length - 1) {
+                    nextButton.style.display = 'none';
+                    submitButton.style.display = 'inline-block';
+                } else {
+                    nextButton.style.display = 'inline-block';
+                    submitButton.style.display = 'none';
+                }
+            }
+
+            function showNextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function showPreviousSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            const quizContainer = document.getElementById('quiz');
+            const resultsContainer = document.getElementById('results');
+            const submitButton = document.getElementById('submit');
+            const myQuestions = [{
+                question: "Which of these objects is the farthest from the Sun?",
+                answers: {
+                    a: "90377 Sedna",
+                    b: "Neptune",
+                    c: "Kuiper belt",
+                    d: "Pluto"
+                },
+                correctAnswer: "a"
+            }, {
+                question: "What is the biggest star in known universe?",
+                answers: {
+                    a: "UY Scuti",
+                    b: "Proxima centauri",
+                    c: "Sun",
+                    d: "Stephenson 2-18"
+                },
+                correctAnswer: "d"
+            }, {
+                question: "What makes a planet a dwarf planet?",
+                answers: {
+                    a: "distance from the Sun",
+                    b: "color",
+                    c: "size and shape",
+                    d: "Apparent Magnitude"
+                },
+                correctAnswer: "c"
+            }, {
+                question: "What two motions do all planets have?",
+                answers: {
+                    a: "twist and shout",
+                    b: "rock and roll",
+                    c: "orbit and spin",
+                    d: "wiggle and wobble"
+                },
+                correctAnswer: "c"
+            }, {
+                question: "The density of a neutron star is equal to?",
+                answers: {
+                    a: "An atomic nucleus",
+                    b: "Quark star",
+                    c: "A brown dwarf",
+                    d: "Black hole"
+                },
+                correctAnswer: "a"
+            }];
+
+            QuizCompletion();
+
+            const previousButton = document.getElementById("previous");
+            const nextButton = document.getElementById("next");
+            const slides = document.querySelectorAll(".slide");
+            let currentSlide = 0;
+
+            showSlide(currentSlide);
+
+            submitButton.addEventListener('click', showResults);
+            previousButton.addEventListener("click", showPreviousSlide);
+            nextButton.addEventListener("click", showNextSlide);
+        })();
+    </script>
+</body>
+
+</html>
